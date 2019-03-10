@@ -309,7 +309,7 @@ class Main_Frame(wx.Frame):
         buttons_data = (
             ("delete", self.DELETE_LABEL, (-1, -1), self._on_update, wx.BitmapButton),
             ("start2", self.START_LABEL, (-1, -1), self._on_update, wx.BitmapButton),
-            ("test", self.START_LABEL, (-1, -1), self._on_update, wx.BitmapButton),
+            ("test", self.START_LABEL, (-1, -1), self._on_update3, wx.BitmapButton),
             ("check", self.START_LABEL, (-1, -1), self._on_update, wx.BitmapButton),
             ("play", self.PLAY_LABEL, (-1, -1), self._on_update, wx.BitmapButton),
             # ("up", self.UP_LABEL, (-1, -1), self._on_update, wx.BitmapButton),
@@ -444,6 +444,18 @@ class Main_Frame(wx.Frame):
     def _on_update(self):
         pass
 
+    def put_on_train(self,path,test_path,learn_rate,empos,CNN_Win,pool_Win,filter,L2_norm):
+        return 1
+        pass
+
+    def _on_update3(self,path,test_path,learn_rate,empos,CNN_Win,pool_Win,filter,L2_norm):
+
+        # 执行模型训练
+        result = self.put_on_train(path,test_path,learn_rate,empos,CNN_Win,pool_Win,filter,L2_norm)
+
+        msg = wx.MessageBox(result , "运行结果" ,wx.OK | wx.ICON_INFORMATION)
+        msg.show()
+
     def _create_menu_item(self, items):
         menu = wx.Menu()
 
@@ -475,36 +487,17 @@ class Main_Frame(wx.Frame):
 
         return static_bitmap
 
+    def change_value(self, textctrl, message):
+        return textctrl.AppendText(message)
+
     def _create_textctrl(self, style=None, event_handler=None):
         if style is None:
             textctrl = wx.TextCtrl(self._panel)
         else:
             textctrl = wx.TextCtrl(self._panel, style=style)
 
-        textctrl.AppendText("""
-2019-02-23T15:07:00.016934: step 45,  loss 3.09304
-2019-02-23T15:07:01.416972: step 46,  loss 2.83289
-2019-02-23T15:07:02.681005: step 47,  loss 2.732
-2019-02-23T15:07:04.016052: step 48,  loss 2.86763
-2019-02-23T15:07:05.454088: step 49,  loss 2.88685
-2019-02-23T15:07:06.831133: step 50,  loss 2.70065
-2019-02-23T15:07:08.215178: step 51,  loss 2.75914
-2019-02-23T15:07:09.627214: step 52,  loss 2.94328
-2019-02-23T15:07:11.039283: step 53,  loss 2.67097
-2019-02-23T15:07:12.397347: step 54,  loss 2.71534
-2019-02-23T15:07:13.784412: step 55,  loss 2.8525
-2019-02-23T15:07:15.224469: step 56,  loss 2.75389
-2019-02-23T15:07:16.535524: step 57,  loss 2.74363
-2019-02-23T15:07:17.814559: step 58,  loss 2.76741
-2019-02-23T15:07:19.149597: step 59,  loss 2.76995
-2019-02-23T15:07:20.540673: step 60,  loss 2.66857
-2019-02-23T15:07:21.912722: step 61,  loss 2.6794
-2019-02-23T15:07:23.242765: step 62,  loss 2.76718
-2019-02-23T15:07:24.622807: step 63,  loss 2.62352
-2019-02-23T15:07:26.014856: step 64,  loss 2.64142
-2019-02-23T15:07:27.408930: step 65,  loss 2.51963
+        self.change_value(textctrl,'')
 
-        """)
         if event_handler is not None:
             textctrl.Bind(wx.EVT_TEXT_PASTE, event_handler)
             textctrl.Bind(wx.EVT_MIDDLE_DOWN, event_handler)
@@ -538,38 +531,14 @@ class Main_Frame(wx.Frame):
 
         panel_sizer.Add(self._url_list, 1, wx.EXPAND)
 
-        # mid_sizer = wx.BoxSizer(wx.HORIZONTAL)
-
-        # mid_sizer.Add(self._folder_icon,wx.ALIGN_CENTER)
-        # mid_sizer.Add(self._model_text, flag=wx.ALIGN_CENTER)
-        # mid_sizer.Add(self._path_combobox, 2, wx.ALIGN_CENTER_VERTICAL)
-        # mid_sizer.AddSpacer((5, -1))
-        # mid_sizer.AddSpacer((10, -1), 1)
-        # mid_sizer.Add(self._videoformat_combobox, 1, wx.ALIGN_CENTER_VERTICAL)
-        # mid_sizer.AddSpacer((5, -1))
-        # mid_sizer.Add(self._buttons["add"], flag=wx.ALIGN_CENTER_VERTICAL)
-        # panel_sizer.Add(mid_sizer, 0, wx.EXPAND | wx.ALL, 10)
-
-        # panel_sizer.Add(self._download_text, 0, wx.BOTTOM, 5)
-        # panel_sizer.Add(self._status_list, 2, wx.EXPAND)
 
         bottom_sizer = wx.BoxSizer(wx.HORIZONTAL)
         bottom_sizer.Add(self._buttons["start2"])
         bottom_sizer.Add(self._start_text, flag=wx.ALIGN_CENTER_VERTICAL)
-        # bottom_sizer.AddSpacer((5, -1))
-        # bottom_sizer.AddSpacer((5, -1))
-        # bottom_sizer.Add(self._buttons["up"])
-        # bottom_sizer.Add(self._from_page, flag=wx.ALIGN_CENTER_VERTICAL)
-        # bottom_sizer.AddSpacer((5, -1))
-        # bottom_sizer.Add(self._buttons["down"])
-        # bottom_sizer.Add(self._next_page, flag=wx.ALIGN_CENTER_VERTICAL)
-        # bottom_sizer.AddSpacer((5, -1))
         bottom_sizer.Add(self._buttons["reload"])
         bottom_sizer.Add(self._restart_text, flag=wx.ALIGN_CENTER_VERTICAL)
-        # bottom_sizer.AddSpacer((5, -1))
         bottom_sizer.Add(self._buttons["pause"])
         bottom_sizer.Add(self._pause_text,flag=wx.ALIGN_CENTER_VERTICAL)
-        # bottom_sizer.AddSpacer((10, -1), 1)
         bottom_sizer.Add(self._buttons["start"])
         bottom_sizer.Add(self._save_label, flag=wx.ALIGN_CENTER_VERTICAL)
         bottom_sizer.Add(self._buttons["check"])
@@ -838,40 +807,7 @@ class Main_Frame2(wx.Frame):
             ("Re-enter", self._on_update)
         )
 
-        # Create options frame
-        # self._options_frame = OptionsFrame(self)
-
-        # Create frame components
         self._panel = wx.Panel(self)
-
-       #  self._url_text = self._create_statictext(self.URLS_LABEL)
-       #
-       #  self._model_text = self._create_statictext(self.MODEL_LABEL)
-       #
-       # # self._clear_text = self._create_statictext(self.CLEAR_LOG)
-       #
-       #  self._pause_text = self._create_statictext(self.PAUSE_LABEL)
-       #
-       #  self._restart_text = self._create_statictext(self.RESTART_LABEL)
-       #
-       #  self._start_text= self._create_statictext(self.START_LABEL)
-       #
-       # # self._next_page = self._create_statictext(self.Next_PAGE)
-       #
-       # # self._from_page= self._create_statictext(self.From_PAGE)
-       #
-       #  self._save_label = self._create_statictext(self.SAVE_LABEL)
-       #
-       #  self._change_label = self._create_statictext(self.CHANGE_LABEL)
-       #
-       #  self._check_label = self._create_statictext(self.CHECK_LABEL)
-       #
-       #  self._test_label = self._create_statictext(self.TEST_LABEL)
-       #
-       #  # REFACTOR Move to buttons_data
-       #  self._settings_button = self._create_bitmap_button(self._bitmaps["settings"], (30, 30), self._on_update)
-       #
-       #  # self._url_list = self._create_textctrl(wx.TE_MULTILINE | wx.TE_DONTWRAP, self._on_update)
 
         self._folder_icon = self._create_static_bitmap(self._bitmaps["folder"], self._on_update)
 
@@ -879,15 +815,6 @@ class Main_Frame2(wx.Frame):
 
         self._folder_icon3 = self._create_static_bitmap(self._bitmaps["folder"], self._on_update)
 
-        # self._path_combobox = ExtComboBox(self._panel, 5, style=wx.CB_READONLY)
-        # self._videoformat_combobox = CustomComboBox(self._panel, style=wx.CB_READONLY)
-
-        # self._download_text = self._create_statictext(self.DOWNLOAD_LIST_LABEL)
-        # self._status_list = ListCtrl(self.STATUSLIST_COLUMNS,
-        #                              parent=self._panel,
-        #                              style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES)
-
-        # Dictionary to store all the buttons
         self._buttons = {}
 
         for item in buttons_data:
@@ -910,27 +837,7 @@ class Main_Frame2(wx.Frame):
 
         self._status_bar = self.CreateStatusBar()
 
-        # Create extra components
 
-        # Overwrite the menu hover event to avoid changing the statusbar
-        # self.Bind(wx.EVT_MENU_HIGHLIGHT, lambda event: None)
-
-        # # Bind extra events
-        # self.Bind(wx.EVT_LIST_ITEM_RIGHT_CLICK, self._on_statuslist_right_click, self._status_list)
-        # self.Bind(wx.EVT_TEXT, self._update_savepath, self._path_combobox)
-        # self.Bind(wx.EVT_LIST_ITEM_SELECTED, self._update_pause_button, self._status_list)
-        # self.Bind(wx.EVT_LIST_ITEM_DESELECTED, self._update_pause_button, self._status_list)
-        # self.Bind(wx.EVT_CLOSE, self._on_close)
-        # self.Bind(wx.EVT_TIMER, self._on_timer, self._app_timer)
-
-        # self._videoformat_combobox.Bind(wx.EVT_COMBOBOX, self._update_videoformat)
-
-        # # Set threads wxCallAfter handlers
-        # self._set_publisher(self._update_handler, UPDATE_PUB_TOPIC)
-        # self._set_publisher(self._download_worker_handler, WORKER_PUB_TOPIC)
-        # self._set_publisher(self._download_manager_handler, MANAGER_PUB_TOPIC)
-
-        # Set up extra stuff
         self.Center()
         self.SetMinSize(self.FRAMES_MIN_SIZE)
 
@@ -984,7 +891,7 @@ class Main_Frame2(wx.Frame):
             textctrl = wx.TextCtrl(self._panel)
         else:
             textctrl = wx.TextCtrl(self._panel, style=style)
-
+        
         textctrl.AppendText("""
 2019-02-23T15:07:00.016934: step 45,  loss 3.09304
 2019-02-23T15:07:01.416972: step 46,  loss 2.83289
@@ -1043,7 +950,10 @@ class Main_Frame2(wx.Frame):
 
     def _on_update2(self,hello):
 
-        print("true")
+        shujuji_path = self.txt1.GetValue()
+        yanzhengji_path = self.txt2.GetValue()
+        ceshiji_path = self.txt3.GetValue()
+
         frame = Main_Frame(None,None)
         self.Show(False)
         frame.Show(True)
@@ -1062,27 +972,27 @@ class Main_Frame2(wx.Frame):
 
         nmbox = wx.BoxSizer(wx.HORIZONTAL)
         fn1 = wx.StaticText(self._panel, -1, "数据集")
-        txt1 = wx.TextCtrl(self._panel, -1,size =  (100,20))
+        self.txt1 = wx.TextCtrl(self._panel, -1,size =  (100,20))
         nmbox.Add(fn1, 0, wx.ALL | wx.CENTER, 5)
-        nmbox.Add(txt1, 0, wx.ALL | wx.CENTER, 5)
+        nmbox.Add(self.txt1, 0, wx.ALL | wx.CENTER, 5)
         nmbox.Add(self._buttons["savepath"],wx.ALL | wx.CENTER, 5)
         nmbox.Add(self._folder_icon,wx.ALL | wx.CENTER, 1)
         nmSizer.Add(nmbox, 0, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, 5)
 
         nmbox2 = wx.BoxSizer(wx.HORIZONTAL)
         fn2 = wx.StaticText(self._panel, -1, "验证集")
-        txt2 = wx.TextCtrl(self._panel, -1, size=(100, 20))
+        self.txt2 = wx.TextCtrl(self._panel, -1, size=(100, 20))
         nmbox2.Add(fn2, 0, wx.ALL | wx.CENTER, 5)
-        nmbox2.Add(txt2, 0, wx.ALL | wx.CENTER, 5)
+        nmbox2.Add(self.txt2, 0, wx.ALL | wx.CENTER, 5)
         nmbox2.Add(self._buttons["savepath2"], wx.ALL | wx.CENTER, 5)
         nmbox2.Add(self._folder_icon2, wx.ALL | wx.CENTER, 5)
         nmSizer.Add(nmbox2, 0, wx.ALL | wx.CENTER, 5)
 
         nmbox3 = wx.BoxSizer(wx.HORIZONTAL)
         fn3 = wx.StaticText(self._panel, -1, "测试集")
-        txt3 = wx.TextCtrl(self._panel, -1, size=(100, 20))
+        self.txt3 = wx.TextCtrl(self._panel, -1, size=(100, 20))
         nmbox3.Add(fn3, 0, wx.ALL | wx.CENTER, 5)
-        nmbox3.Add(txt3, 0, wx.ALL | wx.CENTER, 5)
+        nmbox3.Add(self.txt3, 0, wx.ALL | wx.CENTER, 5)
         nmbox3.Add(self._buttons["savepath3"], wx.ALL | wx.CENTER, 5)
         nmbox3.Add(self._folder_icon3, wx.ALL | wx.CENTER, 5)
         nmSizer.Add(nmbox3, 0, wx.ALL | wx.CENTER, 5)
@@ -1118,10 +1028,12 @@ class Main_Frame2(wx.Frame):
         sbox2 = wx.BoxSizer(wx.HORIZONTAL)
         fx2_2 = wx.StaticText(self._panel, -1, "优化方法")
         combBox = wx.ComboBox(self._panel, -1, u'Adam算法',)
+        combBox.AppendItems(items= '梯度下降')
 
 
         fx2_3 = wx.StaticText(self._panel, -1, "模型选择")
         combBox2 = wx.ComboBox(self._panel, -1, u'LSTM',)
+        combBox2.AppendItems('CNN')
 
         sbox2.Add(fx2_3, 0, wx.ALL | wx.ALIGN_CENTER, 1)
         sbox2.Add(combBox2, 0,wx.ALL | wx.ALIGN_CENTER, 1)
@@ -1152,6 +1064,35 @@ class Main_Frame2(wx.Frame):
         self.Show(True)
 
 
+class Main_Frame3(wx.Frame):
+
+    def __init__(self):
+        super(Main_Frame3, self).__init__(None, title='运行结果', size=(300, 200))
+        self.count = 0
+        pnl = wx.Panel(self)
+        vbox = wx.BoxSizer(wx.VERTICAL)
+
+        hbox1 = wx.BoxSizer(wx.HORIZONTAL)
+        hbox2 = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.text = wx.TextCtrl(pnl, size=(250, 25), style=wx.TE_READONLY)
+        self.btn1 = wx.Button(pnl, label="hello my self")
+
+        hbox1.Add(self.text, proportion=1, flag=wx.ALIGN_CENTRE)
+        hbox2.Add(self.btn1, proportion=1, flag=wx.RIGHT, border=10)
+
+        vbox.Add((0, 30))
+        vbox.Add(hbox1, flag=wx.ALIGN_CENTRE)
+        vbox.Add((0, 20))
+        vbox.Add(hbox2, proportion=1, flag=wx.ALIGN_CENTRE)
+
+        pnl.SetSizer(vbox)
+        self.Centre()
+        self.Show(True)
+
+
+
 app = wx.App(False)
+
 frame = Main_Frame2(None)
 app.MainLoop()
