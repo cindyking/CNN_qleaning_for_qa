@@ -20,7 +20,7 @@
 3. 参数设置：
    - 将学习率等参数传递给后台，后台会自动传递给指定函数，直接执行；
 
-![数据读入界面图](./data/image-20190310210543225.png)
+<img src="./data/image-20190310210543225.png" width="400" hegiht="313" align=center />
 
 #### :cow: 模型训练
 
@@ -32,4 +32,4 @@
 
 通过将change_value函数接入到日志系统，可以完成日志参数的显示
 
-![数据读入界面图](./data/image-20190310211117982.png)
+<img src="./data/image-20190310211117982.png" width="400" hegiht="313" align=center />
